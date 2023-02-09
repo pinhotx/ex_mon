@@ -1,8 +1,16 @@
 defmodule ExMon.Game.Actions.Attack do
+
+  # TODO: Calculate damage using a Base Power and Dices
   alias ExMon.Game
   alias ExMon.Game.Status
-  @move_avg_power 12..15
-  @move_rnd_power 1..20
+  # @move_base_power 10
+
+  @move_average_power 12..15
+  @move_random_power 1..20
+
+  # def roll_dice(:d20), do: Enum.random(1..20)
+  # def roll_dice(:d6), do: Enum.random(1..20)
+  # def roll_dice(:d4), do: Enum.random(1..20)
 
   def attack_opponent(opponent, move) do
     damage = calculate_power(move)
@@ -14,8 +22,8 @@ defmodule ExMon.Game.Actions.Attack do
 
   end
 
-  defp calculate_power(:move_average), do: Enum.random(@move_avg_power)
-  defp calculate_power(:move_random), do: Enum.random(@move_rnd_power)
+  defp calculate_power(:move_average), do: Enum.random(@move_average_power)
+  defp calculate_power(:move_random), do: Enum.random(@move_random_power)
 
   defp calculate_total_life(life, damage) when life - damage < 0, do: 0
   defp calculate_total_life(life, damage), do: life - damage

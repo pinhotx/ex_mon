@@ -4,12 +4,14 @@ defmodule ExMon.Game.Status do
     build_round_message(:started)
     IO.inspect(info)
     IO.puts("\n ------------------------")
+    {:ok, :started}
   end
 
   def print_round_message(%{status: status, turn: turn} = info) do
     build_round_message(status, turn)
     IO.inspect(info)
     IO.puts("\n ------------------------")
+    {:ok, turn}
   end
 
   def build_round_message(:started), do: IO.puts("\n The Game has Started")

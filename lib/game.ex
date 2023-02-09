@@ -3,16 +3,20 @@ defmodule ExMon.Game do
   use Agent
 
   def start(computer, player) do
+    turn = toss_a_coin(:player, :computer)
     initial_value =
       %{
         computer: computer,
         player: player,
-        turn: :player,
+        turn: turn,
         status: :started,
         #last_skill: nil
     }
     # Inicia o estado do jogo com o valor inicial e o nome do modulo
-    Agent.start_link(fn -> initial_value end, name: __MODULE__)
+    start_link = Agent.start_link(fn -> initial_value end, name: __MODULE__)
+    handle_first_turn(turn)
+
+    start_link
   end
 
   # Retorna informações sobre o estado
@@ -46,4 +50,11 @@ defmodule ExMon.Game do
   defp update_turn(%{turn: :player} = state), do: Map.put(state, :turn, :computer)
   defp update_turn(%{turn: :computer} = state), do: Map.put(state, :turn, :player)
 
+  defp handle_first_turn(:computer) do
+    ExMon.make_move
+  end
+
+  defp handle_first_turn(:player), do: :ok
+
+  defp toss_a_coin(head, tails), do: Enum.random([head, tails])
 end
